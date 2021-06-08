@@ -1,0 +1,12 @@
+{
+  "name": "spancer",
+  "displayName": "spancer",
+  "expo": {
+    "name": "spancer",
+    "slug": "spancer",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
