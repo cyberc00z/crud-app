@@ -13,14 +13,14 @@ const Icon = ({name}) => {
         return (
             <Image
             source={require("../images/icons/notifications.png")}
-            style ={{width: 23, height:23}}
+            style ={{width: 20, height:20}}
             />
         );
     } else if (name == "search"){
         return (
             <Image
             source={require("../images/icons/search.png")}
-            style={{width: 23, height: 23}}
+            style={{width: 20, height: 20}}
             />
         );
     }
