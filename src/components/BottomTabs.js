@@ -4,7 +4,6 @@ import {StyleSheet,TouchableOpacity ,View, Text} from "react-native";
 import Icon from "./Icon";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import { Avatar } from "react-native-elements";
-import { Thumbnail } from "native-base";
 
 
 export const BottomTabs = ({state,descriptors, navigation}) => {
@@ -26,7 +25,7 @@ export const BottomTabs = ({state,descriptors, navigation}) => {
                 return   <Icon name="notifications" />
                     
             case "Profile":
-                return <Thumbnail  source={require('../images/assets/ss.jpg')}  small />;
+                return <Avatar   source={require('../images/assets/ss.jpg')} rounded style={{width:30, height:30}} />;
             
             default:
                 return null;
