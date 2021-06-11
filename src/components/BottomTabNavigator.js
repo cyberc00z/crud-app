@@ -7,6 +7,7 @@ import HomeScreen, { navigationOptions as homeNavigationOptions } from "../scree
 import SearchScreen, { navigationOptions as searchNavigationOptions } from "../screens/SearchScreen";
 import NotificationsScreen, { navigationOptions as notificationsNavigationOptions } from "../screens/NotificationsScreen";
 import ProfileScreen, { navigationOptions as profileNavigationOptions } from "../screens/ProfileScreen";
+import AddPostScreen, {navigationOptions as addPostNavigationOptions} from "../screens/AddPostScreen";
 
 import { BottomTabs } from "./BottomTabs";
 
@@ -17,7 +18,9 @@ import { BottomTabs } from "./BottomTabs";
 const NotificationsStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
 const SearchStack = createStackNavigator();
+const PostStack = createStackNavigator();
 const HomeStack = createStackNavigator();8
+
 
 const theme = {
   ...DefaultTheme,
