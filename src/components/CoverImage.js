@@ -1,7 +1,7 @@
 import React from "react";
 import {View, Animated} from "react-native";
 
-const CoverImage = ({source}) => {
+const CoverImage = ({source, size}) => {
     
     return(
         <View style={{flex:1}}>
