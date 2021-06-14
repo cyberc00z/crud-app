@@ -1,3 +1,3 @@
 *React-Native App for Spancer*
 
-UI Component and Other things that we can't miss.
+UI Components and Other things those we can't miss.
