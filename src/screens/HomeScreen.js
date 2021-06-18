@@ -9,14 +9,23 @@ import {
    TouchableOpacity,
    TouchableHighlight,
    ToastAndroid,
+   Alert,
 } from "react-native";
 import {
    Icon,
    Button,
+   Card,
+   CardItem,
+   Thumbnail,
+   Container,
+   Content,
+   Left,
+   Body,
+   Right
 } from "native-base"
 import {Avatar} from "react-native-elements"
 import PostIcon from "../images/icons/post.png";
-import ReplyIcon from "../images/icons/reply.png";
+import Reply from "../images/icons/reply.png";
 import data from "../utils/d.json";
 import { auth } from "../utils/firebase";
 
@@ -60,92 +69,87 @@ export const navigationOptions = ({navigation}) => ({
 export default class HomeScreen extends React.Component{
    render(){
       return (
-         <SafeAreaView style={{justifyContent:"flex-start"}} >
-      
-            <FlatList
-                 style={{padding:20,marginBottom:20}}
-                 data={data}
-                 keyExtractor = {(item,index) => index.toString()}
-                 renderItem={({item}) => 
-               
-                 <View style={styles.post}>
-                 <TouchableHighlight
-                 underlayColor="white"
-                 activeOpacity={0.75}
-                 > 
-                 <View key={item.id} style={{flex:1, flexDirection:"row"}}>
-                    <TouchableOpacity>
-                    <Avatar source={require('../images/assets/ss.jpg')} size={40} rounded />
-                    </TouchableOpacity>
-                  
+         <Container style={{justifyContent:"flex-start", backgroundColor:"#001133"}} >
+           <Content>
+   
+            <Card   key={2} style={styles.card} >
+              <CardItem style={styles.cardItem} >
+                  <Left>
+                  <TouchableOpacity onPress={()=>Alert.alert("we don't have this profile")} >
+                  <Avatar source={require("../images/assets/ss.jpg")} rounded size={40} />
+                  </TouchableOpacity>   
+                  <Body>
+                     <Text style={{fontSize:15}} >username</Text>
+                     <Text style={{fontSize:10}} >Date</Text>
+                  </Body>
+               </Left>
+               <Right>
+                  <Body>
+                  <Button transparent >
+                     <Icon name="bookmark-outline" />
+                  </Button>
                  
-                  <View style={{justifyContent:"flex-start", flexDirection:"column"}}> 
-                    <Text style={{paddingLeft:15, fontWeight: "bold",fontSize:20}}>
-                       {item.username}
-                    </Text>
-                    <Text 
-                     style={{
-                        paddingLeft:15, 
-                        color:"#aaa",
-                        fontSize:13,
-                     }}
-                    >
-                       {"@"+item.name}
-                    </Text>
-                 </View>
-                 </View>
-                 </TouchableHighlight>
-                 <Text style={styles.postText}>
-                    {item.post}
-                 </Text>
-                 <View style={styles.postFooter}>
-                  <View style={styles.footerIcons}>
-                     <Button transparent >
-                        <Icon name="heart-outline" style={{fontSize:20, color:"red"}} />    
-                         <Text style={styles.badgeCount}>34</Text>
-                     </Button>
-                  </View>
-                  <View style={styles.footerIcons}>
-                       <Button transparent  >
-                         <Image source={ReplyIcon} style={{width:30, height:30}} />
-                         <Text style={styles.badgeCount}>12</Text>
-                       </Button>
-                  </View>
-                  <View style={styles.footerIcons}>
-                    <Button transparent >
-                      <Icon name="flame" style={{fontSize:20, color:"orange"}} />
-                      <Text style={styles.badgeCount}>80</Text>
-                     </Button>
-                  </View> 
-                  <View style={styles.footerIcons}>
-                     <Button transparent >
-                      <Icon  name="share-outline" style={{fontSize:20,color:"green"}} />
-                     </Button>
-                  </View>
-                 </View>
-                 </View>
-                 } />
+                  </Body>
+               </Right>
+               <TouchableOpacity  onPress={()=>Alert.alert("Some got clicked")} >
+               <Image source={require("../images/icons/dots.png")} style={{width:25,height:20,marginTop:-10 }} />
+               </TouchableOpacity>
+              
+            </CardItem>
+           
+            <CardItem>
+               <Body>
+                  <Text style={styles.postText} >I am try native base card view for my spancer app , let's if it's work as i suppose but as we grow we have make something customize of our own. Isn't children.</Text>
+               </Body>
+            </CardItem>
+           
+            
+            <CardItem style={styles.footerIcons}>
+               <Left>
+               <Button transparent >
+                     <Icon name="arrow-up" style={{fontSize:28, color:"green"}} />
+                     <Text style={styles.badgeCount}>80 ups </Text>
+                  </Button>
+               </Left>
                
-         </SafeAreaView>
-      )
+               <Button transparent >
+                     <Icon name="arrow-down" style={{fontSize: 28, color:"red"}} />
+                     <Text style={styles.badgeCount}>90 downs</Text>
+                  </Button>
+               
+               
+                  <Right >
+                     <Body>
+                     <Button transparent  >
+                         <Image source={Reply} style={{width:30, height:30}} />
+                         <Text style={styles.badgeCount}>12 reactons</Text>
+                       </Button>
+                     </Body>
+                  </Right>  
+            </CardItem>
+            </Card>
+           </Content>
+         </Container>
+           
+           
+                )
    }
 
 }
 
 
 const styles=StyleSheet.create({
-   post: {
-      paddingTop:20,
+   card: {
       paddingBottom:5, 
-      paddingLeft:10,
-      paddingRight:10,
+      paddingLeft:15,
+      paddingRight:5,
       borderBottomColor:"#bbb",
       borderBottomWidth:StyleSheet.hairlineWidth,
       justifyContent:"center"
    },
    postText:{
-      marginTop:10,
-      fontSize:18,
+      marginTop:5,
+      fontSize:15,
       color:"#555"
    },
    postFooter: {
@@ -155,10 +159,10 @@ const styles=StyleSheet.create({
    },
    footerIcons:{
       flexDirection: "row",
-      alignItems: "center"  
+      alignItems: "center",  
+      justifyContent:"flex-start"
    },
    badgeCount:{
       fontSize:12, 
-      paddingLeft:5
    }
 })
