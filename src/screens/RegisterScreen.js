@@ -1,26 +1,28 @@
-/**
- * user.updateProfile({
-  displayName: "Jane Q. User",
-  photoURL: "https://example.com/jane-q-user/profile.jpg"
-}).then(function() {
-  // Profile updated successfully!
-  // "Jane Q. User"
-  var displayName = user.displayName;
-  // "https://example.com/jane-q-user/profile.jpg"
-  var photoURL = user.photoURL;
-}, function(error) {
-  // An error happened.
-});
-  
- */
-
-
 import React from "react";
-import {Keyboard,Platform,StatusBar ,StyleSheet,ToastAndroid,View} from "react-native";
+import {Alert, Keyboard,Platform , StyleSheet,ToastAndroid, TouchableOpacity } from "react-native";
 import {KeyboardAvoidingView } from "react-native";
 import {TouchableWithoutFeedback} from "react-native-gesture-handler";
+import {Icon} from "native-base";
 import {Button,Input,Block, theme} from "galio-framework";
 import {auth} from "../utils/firebase";
+import { ScreenStackHeaderLeftView } from "react-native-screens";
+
+export const navigationOptions = ({navigation}) => ({
+    title: "Create Account",
+    headerStyle: {
+        backgroundColor:"black",
+    },
+    headerTitleStyle: {
+        color:"white",
+        textAlign:"center"
+    },
+    headerLeft:() => {
+        <TouchableOpacity onPress={()=>navigation.goBack()}>
+           <Button icon="arrow-back" iconFamily="antDesign"  />
+        </TouchableOpacity>
+    }
+
+})
 
 export default class RegisterScreen extends React.Component{
     constructor(props){
@@ -49,32 +51,27 @@ export default class RegisterScreen extends React.Component{
             .then((authUser) => {
                 console.log(authUser);
                 if(authUser){
-                    this.props.navigation.navigate("Setup");
+                    this.props.navigation.navigate("BottomTabNavigator");
                 }             
             }).catch((error) => {
                 JSON.stringify(error)
                 console.log(error);
-                ToastAndroid.showWithGravity(
-                   error.message,
-                   ToastAndroid.CENTER,
-                   ToastAndroid.LONG 
-                )
+                Alert.alert(error.message);
             })
-            
         )
     }
-
     render(){
         const {email, password }= this.state
         return (
             <KeyboardAvoidingView  behavior={Platform.OS==="android" ? "padding" :"height" }  style={styles.container} >
                 
             <Block style={styles.inner}>
-                <Input  placeholder="Email" type="email-address" autoFocus value={email}   onChangeText={(email) => this.setEmail(email)} color={theme.COLORS.BLACK} style={{borderColor: theme.COLORS.INFO, fontSize:30}} placeholderTextColor={theme.COLORS.BLACK}  />
-                <Input placeholder="Password" type="visible-password" password={true}   placeholderTextColor={theme.COLORS.BLACK} value={password} onChangeText={(password) => this.setPassword(password)} color={theme.COLORS.BLACK} />
+                <Input  placeholder="Your University Email" type="email-address" autoFocus value={email}   onChangeText={(email) => this.setEmail(email)} color={theme.COLORS.BLACK} style={{borderColor: theme.COLORS.INFO, fontSize:30}} placeholderTextColor={theme.COLORS.BLACK}  />
+                <Input placeholder="Password"  password={true}   placeholderTextColor={theme.COLORS.BLACK} value={password} onChangeText={(password) => this.setPassword(password)} color={theme.COLORS.BLACK} />
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}> 
-                    <Button shadowless color="info" capitalize  round  style={styles.button} onPress={this.onContinue}>Continue </Button>  
+                    <Button shadowless color="info" capitalize  style={styles.button} onPress={this.onContinue}>Continue </Button>  
                 </TouchableWithoutFeedback>
+                
             </Block>
          
           </KeyboardAvoidingView>
@@ -92,9 +89,8 @@ const styles = StyleSheet.create({
     },
     inner: {
         width: 300,
-        marginTop:170,
+        marginTop:160,
     },
-
     button: {
         width:200,
         marginTop: 10,
