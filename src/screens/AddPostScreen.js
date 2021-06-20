@@ -1,17 +1,22 @@
-import React from "react";
-import {View,StyleSheet,TouchableOpacity, ToastAndroid, Alert} from "react-native";
+import React, { useState } from "react";
+import {View,StyleSheet,TouchableOpacity, ToastAndroid, Alert,Image} from "react-native";
 import {TextInput} from "react-native-paper";
 import {auth, db} from "../utils/firebase";
 import firebase from "firebase";
-import {Button} from "../components/Button";
+import {Button} from "galio-framework";
 
 export const navigationOptions = ({navigation}) => ({
     title:"NEW POST",
     headerLeft: () => (
-        
-          <Button style={{paddingLeft: 15}} pressed={()=>navigation.goBack()} >
-              Cancel
-           </Button> 
+        <TouchableOpacity
+        style={{paddingLeft: 15}}
+        onPress={()=>navigation.goBack()}
+        >
+         <Image 
+         style={{width:24, height:24}}
+         source={require("../images/icons/close.png")}
+         />
+        </TouchableOpacity>
     ),
     headerTitleStyle: {
         fontWeight: "500",
@@ -20,12 +25,83 @@ export const navigationOptions = ({navigation}) => ({
     }
 });
 
+const AddPostScreen = ({navigation}) => {
+    const [title,setTitle] = useState("");
+    const [desc, setDesc] = useState("");
+
+    const onPostUpload = () => {
+        if (!title){
+            Alert.alert("Cann't start a discussion without a Title");
+            return;
+        }
+        if (!desc){
+            Alert.alert("Cann't Start a discussion without a description");
+            return;
+        }
+        return (
+            db.collection("posts").add({
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                title: title,
+                desc:desc ,
+                email: auth.currentUser.email,
+                displayName: "C3P0",
+                photoURL: "https://source.unsplash.com/random" 
+            }).then(() => {
+                navigation.goBack();
+                setTitle("");
+                setDesc("");
+            }).catch((error) => {
+                JSON.stringify(error);
+                console.log(error);
+                Alert.alert(error.message);
+            })
+        )
+        
+    }
+    return (
+        <View style={styles.container}>
+            <View style={styles.addPostContent}>
+            <TextInput
+                value={title}
+                onChangeText={(text) => setTitle(text)}
+                style={styles.textInputTitle}
+                placeholder="Title"
+                autoCapitalize="sentences"
+                autoFocus={true}
+                maxLength={80}
+                numberOfLines={3}
+                textAlignVertical="top"
+            />
+            <TextInput
+                value={desc}
+                onChangeText={(text)=> setDesc(text)}
+                style={styles.textInputDesc}
+                placeholder="Details in 300 words max."
+                autoCapitalize="sentences"
+                maxLength={300}
+                multiline={true}
+                numberOfLines={8}
+                textAlignVertical="top"
+            />
+           </View>
+            <TouchableOpacity>
+            <Button style={styles.button} onPress={onPostUpload}  type="solid" capitalize shadowColor shadowless>Login</Button>    
+            </TouchableOpacity>     
+        </View>
+        
+    );
+}
+
+export default AddPostScreen;
+
+/*
 export default class AddPostScreen  extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             title:"",
             desc: "", 
+
             isLoading: false
         };
     }
@@ -55,14 +131,7 @@ export default class AddPostScreen  extends React.Component{
             this.setState({
                 isLoading: true,
             });
-            db.collection("posts").add({
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                title: title,
-                desc:desc ,
-                email: auth.currentUser.email,
-                displayName: "C3P0",
-                photoURL: "https://source.unsplash.com/random" 
-            })
+           
             this.setState({
                 isLoading: false,
                 title: '',
@@ -109,12 +178,16 @@ export default class AddPostScreen  extends React.Component{
                     textAlignVertical="top"
                 />
                </View>
-                    <Button style={{textAlign:"center"}} pressed={this.onPostUpload}>Post</Button>       
+                <TouchableOpacity>
+                <Button style={styles.button} onPress={this.onPostUpload}  type="solid" capitalize shadowColor shadowless>Login</Button>    
+                </TouchableOpacity>     
             </View>
             
         );
     }
 };
+*/
+
 const styles = StyleSheet.create({
     container: {
         flex:1,
@@ -132,6 +205,6 @@ const styles = StyleSheet.create({
         backgroundColor:"#fff"
     },
     button: {
-        marginLeft:-250
+        marginLeft:100
     }  
 })
