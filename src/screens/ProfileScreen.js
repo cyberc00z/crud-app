@@ -9,6 +9,7 @@ import {LinearGradient} from "expo-linear-gradient";
 import Counter from "../components/Counter";
 import { Avatar } from "react-native-elements";
 import { ListItem } from "native-base";
+import { auth } from "../utils/firebase";
 
 const {width, height} = Dimensions.get("screen");
 
@@ -17,8 +18,8 @@ export const navigationOptions = ({ navigation }) => ({
     headerShown: false
 })
 
-export default class ProfileScreen extends React.Component{
-    render(){
+const ProfileScreen  = () => {
+        console.log(auth.currentUser); 
         return (
            <Block flex style={styles.profile}>
               <Block flex>
@@ -26,12 +27,11 @@ export default class ProfileScreen extends React.Component{
             source={bg}
             style={styles.profileContainer}
             imageStyle={styles.profileImage}>
-          
            <Block flex style={styles.profileDetails}>
-               <Avatar source={{ uri : 'https://source.unsplash.com/random'}} rounded size={150}  />
+               <Avatar source={auth?.currentUser?.photoURL} rounded size={140}  />
            
                 <Block style={styles.profileTexts}>
-                 <Text color="white" size={28} style={{paddingBottom: 8}}>R2D2</Text>
+                 <Text color="white" size={28} style={{paddingBottom: 8}}>{auth?.currentUser?.displayName}</Text>
                  <Block row space="between">
                    <Block row>
                      <Block middle style={styles.school}>
@@ -77,8 +77,9 @@ export default class ProfileScreen extends React.Component{
         </Block>
            </Block>          
         )
-    }
+    
 }
+export default ProfileScreen;
 
 const margin = 15;
 
@@ -86,6 +87,7 @@ const styles = StyleSheet.create({
     profile: {
         marginTop: Platform.OS === "android" ? -HeaderHeight :  0,
         marginBottom: -HeaderHeight * 2,
+        backgroundColor:"rgb(242,242,242)",
      },
      profileImage: {
        width: width * 1.1,
@@ -140,7 +142,7 @@ const styles = StyleSheet.create({
       position: 'relative',
       padding: theme.SIZES.BASE,
       marginHorizontal: theme.SIZES.BASE,
-      marginTop: -theme.SIZES.BASE * 7,
+      marginTop: -theme.SIZES.BASE * 9,
       borderTopLeftRadius: 13,
       borderTopRightRadius: 13,
       backgroundColor: theme.COLORS.WHITE,
