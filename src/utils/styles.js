@@ -2,7 +2,7 @@
 import { StyleSheet } from 'react-native';
 import _ from 'lodash';
 
-export const styles = {
+export const Styles = {
   avatar: StyleSheet.create({
     container: {
       shadowColor: '#000',
