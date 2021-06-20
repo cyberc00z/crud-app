@@ -1,20 +1,17 @@
-import React  from "react";
-import {View,Image ,StyleSheet,TouchableOpacity, ToastAndroid} from "react-native";
-import {TextInput,Button} from "react-native-paper";
-//import { Button } from "galio-framework";
+import React from "react";
+import {View,StyleSheet,TouchableOpacity, ToastAndroid, Alert} from "react-native";
+import {TextInput} from "react-native-paper";
+import {auth, db} from "../utils/firebase";
+import firebase from "firebase";
+import {Button} from "../components/Button";
 
 export const navigationOptions = ({navigation}) => ({
     title:"NEW POST",
     headerLeft: () => (
-        <TouchableOpacity
-        style={{paddingLeft: 15}}
-        onPress={()=>navigation.goBack()}
-        >
-         <Image 
-         style={{width:24, height:24}}
-         source={require("../images/icons/close.png")}
-         />
-        </TouchableOpacity>
+        
+          <Button style={{paddingLeft: 15}} pressed={()=>navigation.goBack()} >
+              Cancel
+           </Button> 
     ),
     headerTitleStyle: {
         fontWeight: "500",
@@ -43,44 +40,44 @@ export default class AddPostScreen  extends React.Component{
            desc: desc
        })
     }
+    
     onPostUpload = async () => {
         const {title, desc} = this.state;
         if (!title){
-            ToastAndroid.showWithGravity(
-            "Can't start a discussion without Title",
-            ToastAndroid.LONG,
-            ToastAndroid.CENTER,
-            )
+            Alert.alert("Cann't Start a Discussion without a Title");
             return;
-        }
+        }  
         if (!desc){
-            ToastAndroid.showWithGravity(
-                "Can't start a discussion without enough details...",
-                ToastAndroid.LONG,
-                ToastAndroid.CENTER,
-                )
+            Alert.alert("Need Description...");
             return;
         }
         try {
             this.setState({
                 isLoading: true,
             });
+            db.collection("posts").add({
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                title: title,
+                desc:desc ,
+                email: auth.currentUser.email,
+                displayName: "C3P0",
+                photoURL: "https://source.unsplash.com/random" 
+            })
             this.setState({
                 isLoading: false,
-                title: "",
-                desc: ""
+                title: '',
+                desc: ''
             });
             this.props.navigation.goBack();
         } catch (err){
+            console.log(err),
             ToastAndroid.showWithGravity(
                 err.message,
                 ToastAndroid.SHORT,
                 ToastAndroid.CENTER,
-            );
-            this.setState({
-                isLoading: false
-            });
+            )
         }
+        
     };
 
     render(){
@@ -111,14 +108,8 @@ export default class AddPostScreen  extends React.Component{
                     numberOfLines={8}
                     textAlignVertical="top"
                 />
-                <TouchableOpacity>
-                    <Button style={styles.button} icon="plus">media</Button>
-                </TouchableOpacity>
                </View>
-               <TouchableOpacity>
-                    
-                    <Button  onPress={this.onPostUpload}>Post</Button>       
-               </TouchableOpacity>
+                    <Button style={{textAlign:"center"}} pressed={this.onPostUpload}>Post</Button>       
             </View>
             
         );
