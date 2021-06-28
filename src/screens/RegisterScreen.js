@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {Alert, Keyboard,Platform , StyleSheet,ToastAndroid, TouchableOpacity } from "react-native";
 import {KeyboardAvoidingView } from "react-native";
 import {TouchableWithoutFeedback} from "react-native-gesture-handler";
-import {Icon} from "native-base";
 import {Button,Input,Block, theme} from "galio-framework";
-import {auth} from "../utils/firebase";
-import { ScreenStackHeaderLeftView } from "react-native-screens";
+import {auth, db} from "../utils/firebase";
+import firebase from "firebase";
+
 
 export const navigationOptions = ({navigation}) => ({
     title: "Create Account",
@@ -16,14 +16,62 @@ export const navigationOptions = ({navigation}) => ({
         color:"white",
         textAlign:"center"
     },
-    headerLeft:() => {
+    headerLeft:() => (
         <TouchableOpacity onPress={()=>navigation.goBack()}>
            <Button icon="arrow-back" iconFamily="antDesign"  />
         </TouchableOpacity>
-    }
+    )
 
 })
 
+const RegisterScreen  = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const onContinue = () => {
+        return (
+            auth.createUserWithEmailAndPassword(email, password)
+            .then(() => {
+                auth.currentUser.updateProfile({
+                    displayName: "C#P0",
+                    photoURL: "https://source.unsplash.com/users/micheal"
+                }).then((authUser) => {
+                    console.log(authUser);
+                }).catch((error) => {
+                    JSON.stringify(error);
+                    console.log("Profile Update Error : ", error.message);
+                })
+                
+            }).catch((error) => {
+                JSON.stringify(error);
+                console.log(error);
+                ToastAndroid.showWithGravity(
+                    error.message,
+                    ToastAndroid.CENTER,
+                    ToastAndroid.LONG
+                );
+            })
+        )
+    }
+   
+    return (
+        <KeyboardAvoidingView  behavior={Platform.OS==="android" ? "padding" :"height" }  style={styles.container} >
+            
+        <Block style={styles.inner}>
+            <Input  placeholder="Your University Email" type="email-address" autoFocus value={email}   onChangeText={(text) => setEmail(text)} color={theme.COLORS.BLACK} style={{borderColor: theme.COLORS.INFO, fontSize:30}} placeholderTextColor={theme.COLORS.BLACK}  />
+            <Input placeholder="Password"  password={true}   placeholderTextColor={theme.COLORS.BLACK} value={password} onChangeText={(text) => setPassword(text)} color={theme.COLORS.BLACK} />
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}> 
+                <Button shadowless color="info" capitalize  style={styles.button} onPress={onContinue}>Continue</Button>  
+            </TouchableWithoutFeedback>
+            
+        </Block>
+     
+      </KeyboardAvoidingView>
+    )
+}
+export default RegisterScreen;
+
+/*
 export default class RegisterScreen extends React.Component{
     constructor(props){
         super(props);
@@ -44,12 +92,13 @@ export default class RegisterScreen extends React.Component{
             password: password,
         })
     }
+
     onContinue = async () => {
         const {email, password  } = this.state;
         return (
             auth.createUserWithEmailAndPassword(email, password)
             .then((authUser) => {
-                console.log(authUser);
+                db.collection("Users").
                 if(authUser){
                     this.props.navigation.navigate("BottomTabNavigator");
                 }             
@@ -78,7 +127,7 @@ export default class RegisterScreen extends React.Component{
         )
     }
 }
-
+*/
 const styles = StyleSheet.create({
     container: {
        flex:1,

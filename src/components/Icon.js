@@ -24,6 +24,14 @@ const Icon = ({name}) => {
             />
         );
     }
+    else if (name=="post"){
+        return (
+            <Image
+            source={require("../images/icons/post.png")}
+            style={{width:20, height:20}}
+            />
+        )
+    }
     
 };
 
