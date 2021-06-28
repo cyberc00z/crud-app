@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {View,StyleSheet,TouchableOpacity, ToastAndroid, Alert,Image} from "react-native";
+import {View,StyleSheet,TouchableOpacity,KeyboardAvoidingView, Alert,Image,SafeAreaView} from "react-native";
 import {TextInput} from "react-native-paper";
 import {auth, db} from "../utils/firebase";
 import firebase from "firebase";
@@ -43,9 +43,9 @@ const AddPostScreen = ({navigation}) => {
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                 title: title,
                 desc:desc ,
-                email: auth.currentUser.email,
-                displayName: "C3P0",
-                photoURL: "https://source.unsplash.com/random" 
+                createdBy: auth.currentUser.email,
+                displayName: auth.currentUser.displayName,
+                photoURL: auth.currentUser.photoURL
             }).then(() => {
                 navigation.goBack();
                 setTitle("");
@@ -59,7 +59,11 @@ const AddPostScreen = ({navigation}) => {
         
     }
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
+            <KeyboardAvoidingView 
+              behavior={Platform.OS==="android" ? "padding": "height"}
+              style={styles.container}
+            >
             <View style={styles.addPostContent}>
             <TextInput
                 value={title}
@@ -85,9 +89,10 @@ const AddPostScreen = ({navigation}) => {
             />
            </View>
             <TouchableOpacity>
-            <Button style={styles.button} onPress={onPostUpload}  type="solid" capitalize shadowColor shadowless>Login</Button>    
-            </TouchableOpacity>     
-        </View>
+            <Button style={styles.button} onPress={onPostUpload}  type="solid" capitalize shadowColor shadowless>Post</Button>    
+            </TouchableOpacity>   
+            </KeyboardAvoidingView>  
+        </SafeAreaView>
         
     );
 }

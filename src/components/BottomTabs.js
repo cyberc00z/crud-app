@@ -4,6 +4,7 @@ import {StyleSheet,TouchableOpacity ,View, Text} from "react-native";
 import Icon from "./Icon";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import { Avatar } from "react-native-elements";
+import { auth } from "../utils/firebase";
 
 
 export const BottomTabs = ({state,descriptors, navigation}) => {
@@ -25,7 +26,7 @@ export const BottomTabs = ({state,descriptors, navigation}) => {
                 return   <Icon name="notifications" />
                     
             case "Profile":
-                return <Avatar   source={require('../images/assets/ss.jpg')} rounded style={{width:30, height:30}} />;
+                return <Avatar source={{uri:auth?.currentUser?.photoURL }} rounded style={{width:30, height:30}} />;
             
             default:
                 return null;
@@ -42,6 +43,7 @@ export const BottomTabs = ({state,descriptors, navigation}) => {
                       : options.title !== undefined
                       ? options.title
                       :route.name;
+                
                 const isFocused = state.index === index;
                 const onPress = () => {
                     const event = navigation.emit({
@@ -88,7 +90,7 @@ const styles = StyleSheet.create({
         borderTopColor:"#bbbbbb",
         borderTopWidth: 1,
         paddingVertical: 10,
-        backgroundColor: "white"
+        backgroundColor: "white",
     },
     tabContainter: {
         flex: 1,
