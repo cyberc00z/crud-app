@@ -1,35 +1,18 @@
-import React from "react";
-import {
-   View, 
-   Text,
+import React, {useState, useEffect, useCallback} from "react";
+import { 
    StyleSheet,
    Image,
-   FlatList,
-   SafeAreaView,
+   ScrollView,
    TouchableOpacity,
-   TouchableHighlight,
    ToastAndroid,
    Alert,
 } from "react-native";
-import {
-   Icon,
-   Button,
-   Card,
-   CardItem,
-   Thumbnail,
-   Container,
-   Content,
-   Left,
-   Body,
-   Right
-} from "native-base"
+
 import {Avatar} from "react-native-elements"
-import PostIcon from "../images/icons/post.png";
-import Reply from "../images/icons/reply.png";
-import data from "../utils/d.json";
-import { auth } from "../utils/firebase";
 
-
+import { auth, db } from "../utils/firebase";
+import CustomListItem from "../components/CustomListItem";
+import {Block} from "galio-framework";
 
 export const navigationOptions = ({navigation}) => ({
    title: "Spancer",
@@ -41,7 +24,7 @@ export const navigationOptions = ({navigation}) => ({
    headerLeft: () => (
       <TouchableOpacity onPress={()=>(
          auth.signOut()
-         .then(()=>navigation.navigate("Login"))
+         .then(()=>navigation.replace("Login"))
          .catch((error) =>{
            JSON.stringify(error),
            ToastAndroid.show(
@@ -50,37 +33,72 @@ export const navigationOptions = ({navigation}) => ({
               ToastAndroid.CENTER,
            )
            })
-         )}>
+         )} style={{marginLeft:20}}  >
        <Avatar rounded  size={40} source={require("../images/assets/ss.jpg")} />   
       </TouchableOpacity>
 
    ),
    headerRight: ()=> (
-      <TouchableOpacity
-      onPress={()=>navigation.navigate("NewPost")}
-      style={{paddingRight: 15}}
-      >
-      <Image source={PostIcon} style={{width:30, height:30}} />    
-     
+      <TouchableOpacity style={{marginRight: 20}} onPress={()=>navigation.navigate("Chats")} >
+      <Image source={require("../images/icons/chat.png")} style={{width:25, height:25}} />    
       </TouchableOpacity>
    )
 })
 
-export default class HomeScreen extends React.Component{
-   render(){
+const delay = (timeout) => {
+  return  new Promise(res => {
+     setTimeout(res, timeout)
+  })
+}
+
+const HomeScreen  = ({navigation}) => {  
+      //console.log(auth.currentUser);   
+      const [loading, setLoading] = useState(false);
+      const [posts, setPosts] = useState([]);
+      const loadMore = useCallback(async () => {
+         setLoading(true);
+         delay (1500).then(() => setLoading(false));
+      }, [loading]);
+
+      useEffect(() => {
+         const unsubscribe = db.collection("posts")
+         .orderBy("timestamp" ,"desc")
+         .onSnapshot((snapshot) => 
+               setPosts(
+                  snapshot.docs.map((doc) => ({
+                     id: doc.id,
+                     data: doc.data()
+               }))
+            )
+         );
+         return unsubscribe;
+      }, []);
+      const expandPost = (id, photoURL,displayName,timestamp,desc ,title) => {
+         navigation.navigate("PostView", {
+            id,
+            photoURL,
+            displayName,
+            timestamp,
+            desc,
+            title
+         })
+      }
+
       return (
-         <Container style={{justifyContent:"flex-start", backgroundColor:"#001133"}} >
+         /*<Container style={{justifyContent:"flex-start", backgroundColor:"#001133"}} >
            <Content>
-   
-            <Card   key={2} style={styles.card} >
-              <CardItem style={styles.cardItem} >
+              <ScrollView>
+           {posts.map(({id, data: {photoURL,displayName,timestamp,desc ,title}}) => 
+             <Card key={id} style={styles.card}>
+                <CardItem style={styles.cardItem}>
                   <Left>
                   <TouchableOpacity onPress={()=>Alert.alert("we don't have this profile")} >
-                  <Avatar source={require("../images/assets/ss.jpg")} rounded size={40} />
+                  <Avatar source={{uri:photoURL}} rounded size={40} />
                   </TouchableOpacity>   
                   <Body>
-                     <Text style={{fontSize:15}} >username</Text>
-                     <Text style={{fontSize:10}} >Date</Text>
+                     <Text style={{fontSize:15}} >{displayName}</Text>
+                     
+                     <Text style={{fontSize: 12}}>{timestamp?.toDate().toUTCString()}</Text>
                   </Body>
                </Left>
                <Right>
@@ -91,52 +109,57 @@ export default class HomeScreen extends React.Component{
                  
                   </Body>
                </Right>
-               <TouchableOpacity  onPress={()=>Alert.alert("Some got clicked")} >
-               <Image source={require("../images/icons/dots.png")} style={{width:25,height:20,marginTop:-10 }} />
+               <TouchableOpacity  onPress={dotOptions} >
+               <Image source={require("../images/icons/dots.png")} style={{height:20, width:20}} />
                </TouchableOpacity>
               
             </CardItem>
            
-            <CardItem>
-               <Body>
-                  <Text style={styles.postText} >I am try native base card view for my spancer app , let's if it's work as i suppose but as we grow we have make something customize of our own. Isn't children.</Text>
+            <CardItem  >
+               <Body onPress={()=>navigation.navigate("Single_Post")} >
+                  <Text style={{fontSize:15,color:"black"}}>{title}</Text>
+                  <Text style={styles.postText} >{desc}</Text>
                </Body>
-            </CardItem>
-           
-            
-            <CardItem style={styles.footerIcons}>
-               <Left>
-               <Button transparent >
+            </CardItem>            
+            <CardItem style={styles.footerIcons}>   
+                  <Button transparent >
                      <Icon name="arrow-up" style={{fontSize:28, color:"green"}} />
                      <Text style={styles.badgeCount}>80 ups </Text>
                   </Button>
-               </Left>
-               
-               <Button transparent >
+                  <Button transparent >
                      <Icon name="arrow-down" style={{fontSize: 28, color:"red"}} />
                      <Text style={styles.badgeCount}>90 downs</Text>
                   </Button>
-               
-               
-                  <Right >
-                     <Body>
-                     <Button transparent  >
-                         <Image source={Reply} style={{width:30, height:30}} />
-                         <Text style={styles.badgeCount}>12 reactons</Text>
-                       </Button>
-                     </Body>
-                  </Right>  
+                  <TouchableOpacity activeOpacity={0.6}  >
+                  <Button transparent  onPress={expandPost}>
+                         <Image  source={comment} style={{width:30, height:30}} />
+                         <Text style={styles.badgeCount}>12 reactions</Text>
+                  </Button>
+                  </TouchableOpacity>
+                 
             </CardItem>
             </Card>
+         )}
+         </ScrollView>
            </Content>
          </Container>
-           
+          */
+         <Block>
+            <ScrollView>
+               {posts.map(({id, data : {
+                 photoURL,displayName,timestamp,desc ,title 
+               }}) => (
+                  <CustomListItem key={id} id={id} photoURL={photoURL} title={title} displayName={displayName} timestamp={timestamp}  desc={desc} expandPost={expandPost} />
+               )
+               )}
+              
+            </ScrollView>
+         </Block> 
            
                 )
    }
 
-}
-
+export default HomeScreen;
 
 const styles=StyleSheet.create({
    card: {
@@ -147,22 +170,5 @@ const styles=StyleSheet.create({
       borderBottomWidth:StyleSheet.hairlineWidth,
       justifyContent:"center"
    },
-   postText:{
-      marginTop:5,
-      fontSize:15,
-      color:"#555"
-   },
-   postFooter: {
-      flexDirection: "row",
-      justifyContent: "space-around",
-      padding: 0
-   },
-   footerIcons:{
-      flexDirection: "row",
-      alignItems: "center",  
-      justifyContent:"flex-start"
-   },
-   badgeCount:{
-      fontSize:12, 
-   }
+  
 })
