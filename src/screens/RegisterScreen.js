@@ -14,13 +14,8 @@ export const navigationOptions = ({navigation}) => ({
     },
     headerTitleStyle: {
         color:"white",
-        textAlign:"center"
+        marginLeft:50,
     },
-    headerLeft:() => (
-        <TouchableOpacity onPress={()=>navigation.goBack()}>
-           <Button icon="arrow-back" iconFamily="antDesign"  />
-        </TouchableOpacity>
-    )
 
 })
 
@@ -33,8 +28,8 @@ const RegisterScreen  = () => {
             auth.createUserWithEmailAndPassword(email, password)
             .then(() => {
                 auth.currentUser.updateProfile({
-                    displayName: "C#P0",
-                    photoURL: "https://source.unsplash.com/users/micheal"
+                    displayName: "C3P0",
+                    photoURL: "https://source.unsplash.com/random"
                 }).then((authUser) => {
                     console.log(authUser);
                 }).catch((error) => {

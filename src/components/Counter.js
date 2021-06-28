@@ -2,10 +2,10 @@ import React from "react";
 import {View ,Text, StyleSheet} from "react-native";
 import numeral from "numeral";
 
-const Counter = ({number, children}) => (
+const Counter = ({value , children}) => (
     <View style={styles.counter} >
         <Text style={styles.number}>
-          {numeral(number)
+          {numeral(value)
             .format("0a")
             .toUpperCase()
           }
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     },
     number: {
         color:"#364047",
-        fontSize:24, 
+        fontSize:20, 
         fontWeight:"500"
     },
     name: {
