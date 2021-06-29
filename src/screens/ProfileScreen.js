@@ -19,7 +19,8 @@ export const navigationOptions = ({ navigation }) => ({
 })
 
 const ProfileScreen  = () => {
-        console.log(auth.currentUser); 
+        //let user = auth.currentUser.photoURL;
+        //console.log(user);
         return (
            <Block flex style={styles.profile}>
               <Block flex>
@@ -28,7 +29,7 @@ const ProfileScreen  = () => {
             style={styles.profileContainer}
             imageStyle={styles.profileImage}>
            <Block flex style={styles.profileDetails}>
-               <Avatar source={auth?.currentUser?.photoURL} rounded size={140}  />
+               <Avatar source={{uri: auth?.currentUser?.photoURL}} rounded size={140}  />
            
                 <Block style={styles.profileTexts}>
                  <Text color="white" size={28} style={{paddingBottom: 8}}>{auth?.currentUser?.displayName}</Text>
@@ -86,7 +87,7 @@ const margin = 15;
 const styles = StyleSheet.create({
     profile: {
         marginTop: Platform.OS === "android" ? -HeaderHeight :  0,
-        marginBottom: -HeaderHeight * 2,
+        marginBottom: -HeaderHeight * 1.8,
         backgroundColor:"rgb(242,242,242)",
      },
      profileImage: {
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
        position: 'relative',
        flexDirection:"row",
        marginTop: 35 + "%",
-       marginLeft:10 + "%"
+       marginLeft:20 + "%"
     },
      profileTexts: {
        paddingHorizontal: theme.SIZES.BASE * 2,
