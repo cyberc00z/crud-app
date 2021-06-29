@@ -3,7 +3,7 @@ import {StyleSheet, Text, View} from "react-native";
 import { Button, DarkTheme } from "react-native-paper";
 import Modal from "react-native-modal";
 
-import Styles from "../../utils/styles";
+import {Styles} from "../../utils/styles";
 
 const BottomModal = ({isOpen, closeModal, options}) => {
     return(
