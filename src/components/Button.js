@@ -19,10 +19,11 @@ const styles = StyleSheet.create({
         opacity:0.9,
         shadowColor:"#000",
         shadowOffset: {width:0, height:0},
-        shadowOpacity:0.2,
+        shadowOpacity:0.4,
         shadowRadius:5
     },
     buttonText: {
-        fontSize: 12
+        fontSize: 15,
+       
     }
 });
