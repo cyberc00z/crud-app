@@ -22,13 +22,13 @@ export const navigationOptions = ({navigation}) => ({
 const RegisterScreen  = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
+    const names = ["C3P0", "R2D2","WAR"];
     const onContinue = () => {
         return (
             auth.createUserWithEmailAndPassword(email, password)
             .then(() => {
                 auth.currentUser.updateProfile({
-                    displayName: "C3P0",
+                    displayName: names[Math.floor(Math.random() * names.length)],
                     photoURL: "https://source.unsplash.com/random"
                 }).then((authUser) => {
                     console.log(authUser);
