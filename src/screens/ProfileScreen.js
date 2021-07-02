@@ -8,26 +8,27 @@ import {HeaderHeight} from "../constants/utils";
 import {LinearGradient} from "expo-linear-gradient";
 import Counter from "../components/Counter";
 import { Avatar } from "react-native-elements";
-import { ListItem } from "native-base";
+import { ListItem, Title } from "native-base";
 import { auth } from "../utils/firebase";
+import ProfileStat from "../components/ProfileStat";
 
 const {width, height} = Dimensions.get("screen");
 
-
-export const navigationOptions = ({ navigation }) => ({
-    headerShown: false
+export const navigationOptions = ({navigation}) => ({
+    headerShown: false,
 })
 
 const ProfileScreen  = () => {
-        //let user = auth.currentUser.photoURL;
-        //console.log(user);
+        
         return (
            <Block flex style={styles.profile}>
               <Block flex>
+           
           <ImageBackground
             source={bg}
             style={styles.profileContainer}
             imageStyle={styles.profileImage}>
+              <LinearGradient colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.1)']} style={styles.gradient} />
            <Block flex style={styles.profileDetails}>
                <Avatar source={{uri: auth?.currentUser?.photoURL}} rounded size={140}  />
            
@@ -38,7 +39,6 @@ const ProfileScreen  = () => {
                      <Block middle style={styles.school}>
                       <Text size={16} color="white">VIT</Text>
                      </Block>
-                    
                    </Block>
                 </Block>
               </Block>
@@ -46,12 +46,16 @@ const ProfileScreen  = () => {
            </Block>
           </ImageBackground>
          </Block>
+         <Block  flex style={styles.options}>
+           <ProfileStat />
+         </Block>
+         {/*
            <Block flex style={styles.options}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <Block row space="between" style={{ padding: theme.SIZES.BASE, }}>
             <Block middle>
                 <Text bold size={12}  >
-                    <Counter style={styles.statSection}  number="4">Dicussions</Counter> 
+                    <Counter style={styles.statSection} number="4">Dicussions</Counter> 
                 </Text>
               </Block>
               <Block middle>
@@ -75,7 +79,7 @@ const ProfileScreen  = () => {
               </Block>
             </Block>
           </ScrollView>
-        </Block>
+        </Block>*/}
            </Block>          
         )
     
@@ -86,13 +90,13 @@ const margin = 15;
 
 const styles = StyleSheet.create({
     profile: {
-        marginTop: Platform.OS === "android" ? -HeaderHeight :  0,
+        marginTop: Platform.OS === "ios" ? 0 : -HeaderHeight,
         marginBottom: -HeaderHeight * 1.8,
         backgroundColor:"rgb(242,242,242)",
      },
      profileImage: {
        width: width * 1.1,
-       height:'auto',
+       height:120 + "%",
      },
      profileContainer: {
        width: width,
