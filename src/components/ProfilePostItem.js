@@ -4,7 +4,7 @@ import { ListItem, Avatar } from "react-native-elements";
 
 
 
-const ProfilePostItem = ({id, photoURL,displayName,timestamp,desc ,title ,expandPost,commentNum, upVoteNum, downVoteNum }) => {        
+const ProfilePostItem = ({ id, photoURL,displayName,timestamp,desc ,title ,expandPost,commentNum, upVoteNum, downVoteNum }) => {        
     return (
       <ScrollView>
         <ListItem key={id} bottomDivider style={styles.container} onPress={()=>expandPost(id,photoURL,displayName,timestamp,desc ,title, commentNum, upVoteNum, downVoteNum)} >
@@ -55,8 +55,9 @@ const styles = StyleSheet.create({
     paddingBottom:5, 
     paddingLeft:10,
     paddingRight:10,
-    borderBottomColor:"rgb(255, 255, 255)",
-    justifyContent:"center" 
+    borderBottomColor:"rgba(255, 255, 255,0.7)",
+    justifyContent:"center" ,
+    backgroundColor:"rgba(255, 255, 225, 0.1)"
   },
   num: {
      display:"none"
