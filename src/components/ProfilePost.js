@@ -43,9 +43,9 @@ const ProfilePost = ({navigation}) => {
                  photoURL,displayName,timestamp,desc ,title , commentNum, upVoteNum, downVoteNum
                 }}) => (
                    console.log(displayName),
-                  <ScrollView> 
+                  
                   <ProfilePostItem key={id} id={id} photoURL={photoURL} title={title} displayName={displayName} timestamp={timestamp}  desc={desc} commentNum={commentNum} upVoteNum={upVoteNum} downVoteNum={downVoteNum} expandPost={expandPost} />
-                  </ScrollView>
+                
                 )
                )}
               

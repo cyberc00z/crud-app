@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, StyleSheet, Dimensions, StatusBar } from "react-native";
+import { Text, StyleSheet, ScrollView,Dimensions, StatusBar } from "react-native";
 import { TabView,TabBar, SceneMap } from "react-native-tab-view";
 import {Block} from "galio-framework";
 import ProfilePost from "./ProfilePost";
@@ -10,7 +10,10 @@ const initialLayout = {width : Dimensions.get('screen').width};
 
 const PostRoute = () => {
     return(
-       <ProfilePost /> 
+        <ScrollView>
+          <ProfilePost /> 
+        </ScrollView>
+       
     );
 };
 
