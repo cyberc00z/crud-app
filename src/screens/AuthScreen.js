@@ -9,6 +9,7 @@ import SinglePostScreen, {navigationOptions as singlePostNavigationOptions} from
 import {Block} from "galio-framework"
 import ChatBoardScreen, {navigationOptions as chatsNavigationOptions } from "./ChatBoardScreen";
 
+
 const AuthStack = createStackNavigator();
 
 const AuthScreen = () => {  
