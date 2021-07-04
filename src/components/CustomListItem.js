@@ -1,15 +1,13 @@
 import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
-import {StyleSheet, Text, View} from "react-native";
+import {StyleSheet, ScrollView} from "react-native";
 import { ListItem, Avatar } from "react-native-elements";
-import { db } from "../utils/firebase";
 
 
 
-const CustomListItem = ({id, photoURL,displayName,timestamp,desc ,title, expandPost }) => {        
+const CustomListItem = ({id, photoURL,displayName,timestamp,desc ,title ,expandPost,commentNum, upVoteNum, downVoteNum }) => {        
     return (
-        <ListItem key={id} bottomDivider style={styles.container} onPress={()=>expandPost(id,photoURL,displayName,timestamp,desc ,title)} >
+      <ScrollView>
+        <ListItem key={id} bottomDivider style={styles.container} onPress={()=>expandPost(id,photoURL,displayName,timestamp,desc ,title, commentNum, upVoteNum, downVoteNum)} >
             <Avatar
               rounded
               size={50}
@@ -24,6 +22,15 @@ const CustomListItem = ({id, photoURL,displayName,timestamp,desc ,title, expandP
                 <ListItem.Subtitle numberOfLines={2} ellipsizeMode="tail" >
                   {desc}
                 </ListItem.Subtitle>
+                <ListItem.Subtitle style={styles.num}>
+                  {commentNum}
+                </ListItem.Subtitle>
+                <ListItem.Subtitle style={styles.num} >
+                  {upVoteNum}
+                </ListItem.Subtitle>
+                <ListItem.Subtitle style={styles.num}>
+                  {downVoteNum}
+                </ListItem.Subtitle>
               <ListItem.Subtitle>
                 posted by @{displayName}
               </ListItem.Subtitle>
@@ -33,6 +40,7 @@ const CustomListItem = ({id, photoURL,displayName,timestamp,desc ,title, expandP
             </ListItem.Content>
 
         </ListItem>
+        </ScrollView>
     )
 }
 
@@ -47,8 +55,13 @@ const styles = StyleSheet.create({
     paddingBottom:5, 
     paddingLeft:10,
     paddingRight:10,
-    borderBottomColor:"#bbb",
+    borderBottomColor:"rgb(255, 255, 255)",
     justifyContent:"center" 
+  },
+  num: {
+     display:"none"
+    //display:"flex",
+    //flexDirection:"row"
   }
 
 })
