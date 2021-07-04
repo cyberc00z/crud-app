@@ -7,9 +7,10 @@ import HomeScreen, { navigationOptions as homeNavigationOptions } from "../scree
 import SearchScreen, { navigationOptions as searchNavigationOptions } from "../screens/SearchScreen";
 import AddPostScreen, {navigationOptions as postNavigationOptions} from "../screens/AddPostScreen";
 import NotificationsScreen, { navigationOptions as notificationsNavigationOptions } from "../screens/NotificationsScreen";
-import ProfileScreen, { navigationOptions as profileNavigationOptions } from "../screens/ProfileScreen";
+import ProfileScreen , {navigationOptions as profileNavigationOptions} from "../screens/ProfileScreen";
 import { BottomTabs } from "./BottomTabs";
-
+import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
+import Icon from "react-native-vector-icons/Feather"
 
 // Creating separate stacks to be able to configure header via navigationOptions.
 // There is no way to configure header for bottom tabs otherwise.
@@ -74,17 +75,32 @@ const Home = () => (
   </HomeStack.Navigator>
 );
 
-const BottomTab = createBottomTabNavigator();
+const Tabs = AnimatedTabBarNavigator();
 
 export const BottomTabNavigator = () => (
     <Block flex >
-      <BottomTab.Navigator tabBar={props => <BottomTabs {...props} />}>
-        <BottomTab.Screen component={Home} name="Home" />
-        <BottomTab.Screen component={Search} name="Search" />
-        <BottomTab.Screen component={Post} name="Post" /> 
-        <BottomTab.Screen component={Notifications} name="Notifications" />
-        <BottomTab.Screen component={Profile} name="Profile" />
-      </BottomTab.Navigator>
+      <Tabs.Navigator
+       tabBarOptions={{
+        activeTintColor: "#000",
+        inactiveTintColor: "#000"
+       }}
+      >
+        <Tabs.Screen component={Home} name="Home" options={{
+          tabBarIcon: ({ focused, color, size }) => (
+            <Icon 
+              name="crosshair"
+              size={size ? size : 24}
+              color={focused ? color : "#000"}
+              focused={focused}
+              color={color}
+            />
+          )
+        }} />
+        <Tabs.Screen component={Search} name="Search" />
+        <Tabs.Screen component={Post} name="Post" /> 
+        <Tabs.Screen component={Notifications} name="Notifications" />
+        <Tabs.Screen component={Profile} name="Profile" />
+      </Tabs.Navigator>
   </Block>
 );
 
