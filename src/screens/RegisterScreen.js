@@ -22,22 +22,31 @@ export const navigationOptions = ({navigation}) => ({
 const RegisterScreen  = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    
     const names = ["C3P0", "R2D2","WAR"];
+    const  displayName = names[Math.floor(Math.random() * names.length)];
+    const photoURL = "https://source.unsplash.com/random"
+
+
     const onContinue = () => {
         return (
             auth.createUserWithEmailAndPassword(email, password)
-            .then(() => {
-                auth.currentUser.updateProfile({
-                    displayName: names[Math.floor(Math.random() * names.length)],
-                    photoURL: "https://source.unsplash.com/random"
-                }).then((authUser) => {
-                    console.log(authUser);
-                }).catch((error) => {
-                    JSON.stringify(error);
-                    console.log("Profile Update Error : ", error.message);
+            .then((result) => {
+                db.collection("users")
+                .doc(auth.currentUser.uid)
+                .set({
+                    displayName,
+                    photoURL,
+                    email
                 })
-                
-            }).catch((error) => {
+                console.log(result);
+            }).then(() => {
+                auth.currentUser.updateProfile({
+                    displayName: displayName,
+                    photoURL: photoURL
+                })
+            })
+            .catch((error) => {
                 JSON.stringify(error);
                 console.log(error);
                 ToastAndroid.showWithGravity(

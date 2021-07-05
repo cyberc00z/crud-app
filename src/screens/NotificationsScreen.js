@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text ,StatusBar,Image} from "react-native";
 //import Follow from "../components/Notifications/Follow";
 //import Notification from "../components/Notifications";
-
+import dayjs from 'dayjs/plugin/relativeTime';
 
 // icons
 import CategoriesIcon from "../images/icons/categories.png";
