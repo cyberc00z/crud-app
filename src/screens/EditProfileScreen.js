@@ -1,7 +1,8 @@
 import React from "react";
-import {View,  Text} from "react-native";
-import { Button } from "react-native-elements";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import {StatusBar,TouchableOpacity , Text} from "react-native";
+import { Button,Icon } from "native-base";
+import {CommonActions} from "@react-navigation/native";
+import EditProfileForm from "../components/EditProfileForm";
 
 export const navigationOptions = ({ navigation, route }) => ({
     title: "EDIT PROFILE",
@@ -16,26 +17,33 @@ export const navigationOptions = ({ navigation, route }) => ({
      </TouchableOpacity>
     ),
     headerLeft: () => (
-      <View style={{paddingLeft: 15}}>
-          <Button onPress={()=>navigation.goBack()} title="Back" />
-      </View>
+      <TouchableOpacity style={{paddingLeft: 15}}>
+          <Button iconLeft transparent >
+             <Icon name="arrow-back" onPress={()=>navigation.goBack()} />
+          </Button>
+      </TouchableOpacity>
     ),
-    headerStyle:{
-        paddingLeft:15,
-        paddingRight:15,
-    },
     headerTitleStyle:{
         fontWeight: "500",
-        fontSize:13
+        fontSize:13,
+        textAlign:"center",
     }
 })
 
 export default class EditProfileScreen extends React.Component{
+    componentDidMount(){
+        this._navListener = this.props.navigation.addListener("didFocus", () => {
+            StatusBar.setBarStyle("dark-content");
+        });
+    }
+    
     render(){
         return (
-            <View>
-                <Text>This is EditProfile.</Text>
-            </View>
-        )
+            <EditProfileForm
+            registerSave={saveFunc => {
+                this.props.navigation.dispatch(CommonActions.setParams({saveFunc}));
+            }}
+            />
+        );
     }
 }
