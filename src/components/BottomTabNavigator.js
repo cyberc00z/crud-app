@@ -10,7 +10,7 @@ import NotificationsScreen, { navigationOptions as notificationsNavigationOption
 import ProfileScreen , {navigationOptions as profileNavigationOptions} from "../screens/ProfileScreen";
 import { BottomTabs } from "./BottomTabs";
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
-import Icon from "react-native-vector-icons/Feather"
+import Icon  from "react-native-vector-icons/Feather"
 
 // Creating separate stacks to be able to configure header via navigationOptions.
 // There is no way to configure header for bottom tabs otherwise.
@@ -89,6 +89,7 @@ export const BottomTabNavigator = () => (
           tabBarIcon: ({ focused, color, size }) => (
             <Icon 
               name="crosshair"
+              
               size={size ? size : 24}
               color={focused ? color : "#000"}
               focused={focused}
@@ -96,10 +97,54 @@ export const BottomTabNavigator = () => (
             />
           )
         }} />
-        <Tabs.Screen component={Search} name="Search" />
-        <Tabs.Screen component={Post} name="Post" /> 
-        <Tabs.Screen component={Notifications} name="Notifications" />
-        <Tabs.Screen component={Profile} name="Profile" />
+        <Tabs.Screen component={Search} name="Search" options={{
+          tabBarIcon: ({ focused, color,size }) => (
+            <Icon 
+              name="search"
+              size={size ? size : 24}
+              color={focused ? color : "#000"}
+              focused={focused}
+              color={color}
+             />
+          )
+        }} />
+        <Tabs.Screen component={Post} name="Post" options={{
+          tabBarIcon: ({focused, color, size}) => (
+            <Icon 
+              name="edit-2"
+              size={size ? size : 24 }
+              color={color ? color : "#000"}
+              focused={focused}
+              color={color}
+            />
+          )
+        }} /> 
+        <Tabs.Screen component={Notifications} name="Notifications"
+          options={{
+            tabBarIcon: ({focused, color, size}) => (
+              <Icon 
+                name="meh"
+                size={size ? size: 24}
+                color={color ? color : "#000"}
+                focused={focused}
+                color={color}
+              />
+            )
+          }}
+        />
+        <Tabs.Screen component={Profile} name="Profile"
+         options={{
+           tabBarIcon: ({focused, color, size}) => (
+             <Icon
+               name="user"
+               size={size ? size : 24}
+               color={color  ?  color : "#000"}
+               focused={focused}
+               color={color}
+             />
+           )
+         }}
+        />
       </Tabs.Navigator>
   </Block>
 );
