@@ -2,7 +2,7 @@ import React from "react";
 import { Dayjs } from "dayjs";
 
 
-export function readableTimestamp(timestamp, tDateTimeParser){
+export function readableTimestamp(timestamp,tDateTimeParser){
     let time;
     if (
         typeof timestamp === 'string' && timestamp[timestamp.length - 1].toLowerCase() === 'z'

@@ -1,5 +1,5 @@
 //import { Icon , Button, Text } from "native-base"
-import React from "react";
+import React, { useState } from "react";
 import {ImageBackground,ScrollView, StyleSheet,Platform, Dimensions,Image } from "react-native";
 import {Block, theme, Text} from "galio-framework";
 import bg from "../images/assets/profileBack.png";
@@ -9,7 +9,7 @@ import {LinearGradient} from "expo-linear-gradient";
 import Counter from "../components/Counter";
 import { Avatar } from "react-native-elements";
 import { ListItem, Title } from "native-base";
-import { auth } from "../utils/firebase";
+import { auth, db } from "../utils/firebase";
 import ProfileStat from "../components/ProfileStat";
 
 const {width, height} = Dimensions.get("screen");
@@ -19,11 +19,9 @@ export const navigationOptions = ({navigation}) => ({
 })
 
 const ProfileScreen  = () => {
-        
         return (
            <Block flex style={styles.profile}>
               <Block flex>
-           
           <ImageBackground
             source={bg}
             style={styles.profileContainer}
