@@ -28,8 +28,7 @@ export const navigationOptions = ({navigation}) => ({
 const AddPostScreen = ({navigation}) => {
     const [title,setTitle] = useState("");
     const [desc, setDesc] = useState("");
-    const [upVoteNum, setUpVoteNum] = useState(1);
-    const [downVoteNum , setDownVoteNum] = useState(0);
+    const [Vote, setVote] = useState(1);
     const [commentNum, setCommentNum] = useState(0);
 
     const onPostUpload = () => {
@@ -49,9 +48,8 @@ const AddPostScreen = ({navigation}) => {
                 createdBy: auth.currentUser.email,
                 displayName: auth.currentUser.displayName,
                 photoURL: auth.currentUser.photoURL,
-                upVoteNum : upVoteNum,
+                Vote : Vote,
                 commentNum: commentNum,
-                downVoteNum : downVoteNum
             }).then(() => {
                 navigation.goBack();
                 setTitle("");
