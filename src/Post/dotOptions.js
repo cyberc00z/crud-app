@@ -1,44 +1,56 @@
-import React from "react";
-import { Alert } from "react-native";
-import BottomModal from "../components/BottomModal";
+import React, { Component } from 'react'
+import { View, UIManager, findNodeHandle, TouchableOpacity } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialIcons'
+import {PropTypes} from "prop-types"
 
-import {onShare, onDelete} from "../utils/Handlers/PostHandlers";
+const ICON_SIZE = 24
 
-const dotOptions = ({isOpen, closeModal,goBack, post }) => {
+export default class PopupMenu extends Component {
+  static propTypes = {
+    // array of strings, will be list items of Menu
+    actions:  PropTypes.arrayOf(PropTypes.string).isRequired,
+    onPress: PropTypes.func.isRequired
+  }
+
+  constructor (props) {
+    super(props)
+    this.state = {
+      icon: null
+    }
+  }
+
+  onError () {
+    console.log('Popup Error')
+  }
+
+  onPress = () => {
+    if (this.state.icon) {
+      UIManager.showPopupMenu(
+        findNodeHandle(this.state.icon),
+        this.props.actions,
+        this.onError,
+        this.props.onPress
+      )
+    }
+  }
+
+  render () {
     return (
-        <BottomModal
-           isOpen={isOpen}
-           closeModal={()=> closeModal()}
-           options={[
-               {
-                   text:"Delete",
-                   onPress: () => {
-                       closeModal();
-                       onDelete(post, goBack);
-                   },
-               },
-               {
-                   text: 'Share',
-                   onPress: () => {
-                       onShare(post.split('.')[0], (message) => {
-                           Alert.alert('Error', message,[{text: 'ok'}], {
-                               cancelable: true,
-                           });
-                       });
-                       closeModal();
-                   }
-               }
-           ]}
-        
-        
-        />
-    );
-};
+      <View>
+        <TouchableOpacity onPress={this.onPress}>
+          <Icon
+            name='more-vert'
+            size={ICON_SIZE}
+            color={'grey'}
+            ref={this.onRef} />
+        </TouchableOpacity>
+      </View>
+    )
+  }
 
-dotOptions.defaultProps = {
-    isOpen: false,
-    closeModal: () => {},
-    goBack: () => {},
-    post:"",
-};
-export default dotOptions;
+  onRef = icon => {
+    if (!this.state.icon) {
+      this.setState({icon})
+    }
+  }
+}
