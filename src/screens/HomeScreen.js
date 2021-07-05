@@ -29,7 +29,7 @@ export const navigationOptions = ({navigation}) => ({
               ToastAndroid.CENTER,
            )
            })
-         )} style={{marginLeft:20}}  >
+         )} style={{marginLeft:20}}>
        <Avatar rounded  size={40} source={{uri: auth?.currentUser?.photoURL}} />   
       </TouchableOpacity>
 
@@ -69,7 +69,7 @@ const HomeScreen  = ({navigation}) => {
          );
          return unsubscribe;
       }, []);
-      const expandPost = (id, photoURL,displayName,timestamp,desc ,title,commentNum, upVoteNum, downVoteNum) => {
+      const expandPost = (id, photoURL,displayName,timestamp,desc ,title,commentNum,Vote) => {
          navigation.navigate("PostView", {
             id,
             photoURL,
@@ -78,8 +78,7 @@ const HomeScreen  = ({navigation}) => {
             desc,
             title,
             commentNum,
-            upVoteNum,
-            downVoteNum
+            Vote,
          })
       }
 
@@ -87,9 +86,9 @@ const HomeScreen  = ({navigation}) => {
          <Block>
             <ScrollView>
                {posts.map(({id, data : {
-                 photoURL,displayName,timestamp,desc ,title , commentNum, upVoteNum, downVoteNum
-               }}) => (
-                  <CustomListItem key={id} id={id} photoURL={photoURL} title={title} displayName={displayName} timestamp={timestamp}  desc={desc} commentNum={commentNum} upVoteNum={upVoteNum} downVoteNum={downVoteNum} expandPost={expandPost} />
+                 photoURL,displayName,timestamp,desc ,title , commentNum, Vote
+                         }}) => (
+                  <CustomListItem key={id} id={id} photoURL={photoURL} title={title} displayName={displayName} timestamp={timestamp}  desc={desc} commentNum={commentNum} Vote={Vote} expandPost={expandPost} />
                )
                )}
               
